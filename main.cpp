@@ -3,7 +3,11 @@
 #include <optional>
 
 int main(){
-  lruCache<std::string, int> lru;
+
+  int capacity;
+  std::cout << "Enter cache capacity: " << '\n';
+  std::cin >> capacity;
+  lruCache<std::string, int> lru(capacity);
   
   std::string key;
   int value;

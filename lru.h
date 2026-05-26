@@ -8,47 +8,46 @@
 //insert key, insert value
 //key-value pair stored inside a container. (std::list)
 
-class data{
-  std::string key;
-  int value;
-
-  public:
-    data(const std::string& key_, const int& value_) : key(key_), value(value_) {}
-};
 
 template<typename Key, typename Value>
 class lruCache{
   std::list<std::pair<Key, Value>> cacheList;
   std::unordered_map<Key, typename std::list<std::pair<Key, Value>>::iterator> check;
 
+  size_t capacity;
   public:
+
+
+    lruCache(const int& size) : capacity(size) {};
     void put(const Key& key, const Value& value){
 
-      if(cacheList.size() == 3){
-        //remove the last element(rather, replace the last element)
+
+      if(cacheList.size() == capacity){
+        //too big, remove the last element from the list and remove corresponding element from map
         
-        auto sl = std::next(cacheList.begin(), 2);
+        Key lastKey = cacheList.back().first;       //end() is the iterator, back is thelement
+        check.erase(lastKey);
+        cacheList.pop_back();
 
-        cacheList.pop_back();   //remove last element
-        cacheList.emplace_back(key, value);
-        cacheList.splice(cacheList.begin(), cacheList, sl);           
-
+        //last element removed, now enter the new element
+        cacheList.emplace_front(key, value);
+        check[key] = cacheList.begin();
+        return;
       }
+
+      auto it = check.find(key);
+
+      if(it != check.end()){
+        //found! so you dereference the iterator
+        it->second->second = value;
+        cacheList.splice(cacheList.begin(), cacheList, it->second);
+      }
+
       else{
-        auto it = check.find(key);
-
-        if(it != check.end()){
-          //found! so you dereference the iterator
-          it->second->second = value;
-          cacheList.splice(cacheList.begin(), cacheList, it->second);
+        //not found!, so you insert both Key-value pair, where do you insert it?(front)
+        cacheList.emplace_front(key, value);
+        check[key] = cacheList.begin();
         }
-
-        else{
-          //not found!, so you insert both Key-value pair, where do you insert it? (end)
-          cacheList.emplace_front(key, value);
-          check[key] = cacheList.begin();
-          }
-      }
     }
 
 
@@ -69,10 +68,16 @@ class lruCache{
     }
 
     void display(){
-      std::cout << "LRU cache" << '\n';
-      for(auto data : cacheList){
-        std::cout << data.first << " " << data.second << '\n';
+
+      if(cacheList.empty()){
+        std::cout << "List is empty!" << '\n';
       }
+      else{
+          std::cout << "===CACHE STORE===" << '\n';
+          for(auto data : cacheList)
+            std::cout << data.first << " " << data.second << '\n';
+      }
+
     }
 
     void remove(){
