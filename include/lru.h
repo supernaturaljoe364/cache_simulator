@@ -67,7 +67,7 @@ class lruCache{
       }
     }
 
-    void display(){
+    void display() const{
 
       if(cacheList.empty()){
         std::cout << "List is empty!" << '\n';
@@ -94,5 +94,30 @@ class lruCache{
         cacheList.pop_back();
         std::cout << "LRU task removed." << '\n';
       }
+    }
+
+    void remove(const Key& key){
+      
+      if(cacheList.empty()){
+        std::cout << "List is empty!" << '\n';
+        return;
+      }
+      else{
+        
+        auto it = check.find(key);
+
+        if(it != check.end()){
+          //key found! now remove it
+          cacheList.erase(it->second);
+          check.erase(it);
+        }
+
+        std::cout << "LRU task removed." << '\n';
+      }
+
+    }
+
+    bool contains(const Key& key){
+      return check.find(key) != check.end();
     }
 };
