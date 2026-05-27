@@ -1,72 +1,101 @@
 #include <iostream>
 #include "lru.h"
-#include <optional>
+#include <sstream>
+#include <functional>
+#include <limits>
 
 int main(){
 
   int capacity;
-  std::cout << "Enter cache capacity: " << '\n';
+  std::cout << "Enter cache capacity: ";
   std::cin >> capacity;
+
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   lruCache<std::string, int> lru(capacity);
-  
+
   std::string key;
   int value;
-  int ch;
-  do{
-    std::cout << "===LRU CACHE===" << '\n';
-    std::cout << "1. GET\n2. PUT\n3. DISPLAY\n4. REMOVE\n5. REMOVE(KEY)\n6. CONTAINS(KEY)\n7. STATISTICS\n8. EXIT\nEnter choice: ";
-    std::cin >> ch;
 
-    if(ch == 1){
+  std::unordered_map<std::string, std::function<void(std::istringstream&)>> commands = {
+    {
+      "GET", [&](std::istringstream& iss){
+        iss >> key;
+        auto result = lru.get(key);
 
-      std::cout << "Enter key: ";
-      std::cin >> key;
-      
-      auto it = lru.get(key);
-      if(it.has_value()){
-        std::cout << "Value is: " << it.value() << '\n';
+        if(result.has_value()) {
+          std::cout << result.value() << '\n';
+        }
+        else{
+          std::cout << "Value Not found!" << '\n';
+        }
       }
-      else{
-        std::cout << "Key not found!" << '\n';
+    },
+
+    {
+      "PUT", [&](std::istringstream& iss){
+        iss >> key >> value;
+        lru.put(key, value);
+        
+        std::cout << "Value added.\n";
+      }
+    },
+
+    {
+      "DISPLAY", [&](std::istringstream& iss){
+        lru.display();
+      }
+    }, 
+
+    {
+      "REMOVE", [&](std::istringstream& iss){
+        iss >> key;
+        if(key == "") lru.remove();
+
+        else{
+          iss >> key;
+          lru.remove(key);
+        }
+       }
+     },
+
+    {
+      "CONTAINS", [&](std::istringstream& iss){
+        iss >> key;
+
+        lru.contains(key);
+      }
+    },
+
+    {
+      "SHOW STATS", [&](std::istringstream& iss){
+        lru.displayStats();
+      }
+    },
+    {
+      "EXIT", [&](std::istringstream& iss){
+        std::exit(0);
       }
     }
-    else if(ch == 2){
-      std::cout << "Enter key,value : ";
-      std::cin >> key >> value;
 
-      lru.put(key, value);
-    }
-    else if(ch == 3){
-      lru.display();
-    }
-    else if(ch == 4){
-      lru.remove();
-    }
-    else if(ch == 5){
+  };
+
+  while(true){
+    std::cout << "====LRU SHIT=====\n";
+    std::string input;
+
+    std::string command; 
+
+    std::getline(std::cin, input);
+    std::istringstream iss(input);
   
-      std::cout << "Enter key: ";
-      std::cin >> key;
-      lru.remove(key);
-    }
-    else if(ch == 6){
-      std::cout << "Enter key: ";
-      std::cin >> key;
+    iss >> command;
+    std::cout << command << '\n';
 
-      if(lru.contains(key)){
-        std::cout << "key found!" << '\n';
-      }
-      else{
-        std::cout << "Key not foudn!" << '\n';
-      }
-    }
-    else if(ch == 7){
-      lru.displayStats();
-    }
-    else if(ch == 8){
-      break;
+    if(commands.find(command) != commands.end()){
+      commands[command](iss);
     }
     else{
-      std::cout << "Invalid input." << '\n';
+      std::cout << "Invalid command." << '\n';
     }
-  }while(ch != 8);
+  }
 }
