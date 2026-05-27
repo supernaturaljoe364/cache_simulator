@@ -14,7 +14,7 @@ int main(){
   int ch;
   do{
     std::cout << "===LRU CACHE===" << '\n';
-    std::cout << "1. GET\n2. PUT\n3. DISPLAY\n4. REMOVE\n5. REMOVE(KEY)\n6. CONTAINS(KEY)\n7. EXIT\nEnter choice: ";
+    std::cout << "1. GET\n2. PUT\n3. DISPLAY\n4. REMOVE\n5. REMOVE(KEY)\n6. CONTAINS(KEY)\n7. STATISTICS\n8. EXIT\nEnter choice: ";
     std::cin >> ch;
 
     if(ch == 1){
@@ -44,12 +44,12 @@ int main(){
     }
     else if(ch == 5){
   
-      std::cout << "Enter key";
+      std::cout << "Enter key: ";
       std::cin >> key;
       lru.remove(key);
     }
     else if(ch == 6){
-      std::cout << "Enter key";
+      std::cout << "Enter key: ";
       std::cin >> key;
 
       if(lru.contains(key)){
@@ -60,10 +60,13 @@ int main(){
       }
     }
     else if(ch == 7){
+      lru.displayStats();
+    }
+    else if(ch == 8){
       break;
     }
     else{
       std::cout << "Invalid input." << '\n';
     }
-  }while(ch != 7);
+  }while(ch != 8);
 }
