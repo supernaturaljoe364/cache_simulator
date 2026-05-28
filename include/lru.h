@@ -13,6 +13,7 @@ struct Data{
   size_t hits = 0;
   size_t misses = 0;
   size_t evictions = 0;
+  size_t hitMiss = 0;
   
 };
 
@@ -37,6 +38,7 @@ class lruCache{
       if(it != check.end()){
         //found! so you dereference the iterator
         data.hits++;
+        data.hitMiss++;
         it->second->second = value;
         cacheList.splice(cacheList.begin(), cacheList, it->second);
         return;
@@ -75,12 +77,14 @@ class lruCache{
       if(it != check.end()){
         //return Value (cache hit!)
         data.hits++;
+        data.hitMiss++;
         cacheList.splice(cacheList.begin(), cacheList, it->second);
         return it->second->second;
 
       }
       else {
         data.misses++;
+        data.hitMiss++;
         return std::nullopt;
       }
     }
@@ -127,12 +131,14 @@ class lruCache{
         if(it != check.end()){
           //key found! now remove it
           data.hits++;
+          data.hitMiss++;
           cacheList.erase(it->second);
           check.erase(it);
           std::cout << "LRU task removed." << '\n';
         }
         else{
           data.misses++;
+          data.hitMiss++;
           std::cout << "Key not found!" << '\n';
         }
 
@@ -150,7 +156,9 @@ class lruCache{
       std::cout << "Total Requests: "  << data.totalRequests << '\n';
       std::cout << "Hits: " << data.hits << '\n';
       std::cout << "Misses: " << data.misses << '\n';
+      std::cout << "HitMisses: " << data.hitMiss << '\n';
       std::cout << "Evictions: " << data.evictions << '\n';
-
+      std::cout << "Hit Rate: " << (static_cast<float>(data.hits) / (data.hitMiss)) * 100 << "%" << '\n';
+      std::cout << "Miss Rate: " << (static_cast<float>(data.misses)/ (data.hitMiss)) * 100 << "%" <<'\n';
     }
 };
