@@ -13,12 +13,10 @@ int main(){
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   lruCache<std::string, int> lru(capacity);
 
-  std::string key;
-  int value;
-
   std::unordered_map<std::string, std::function<void(std::istringstream&)>> commands = {
     {
       "GET", [&](std::istringstream& iss){
+        std::string key;
         iss >> key;
         auto result = lru.get(key);
 
@@ -26,17 +24,19 @@ int main(){
           std::cout << result.value() << '\n';
         }
         else{
-          std::cout << "Value Not found!" << '\n';
+          std::cout << "Key not found!" << '\n';
         }
       }
     },
 
     {
       "PUT", [&](std::istringstream& iss){
+        std::string key;
+        int value;
         iss >> key >> value;
         lru.put(key, value);
-        
-        std::cout << "Value added.\n";
+
+        std::cout << "Key, Value entered." << '\n';
       }
     },
 
@@ -48,11 +48,13 @@ int main(){
 
     {
       "REMOVE", [&](std::istringstream& iss){
+        std::string key;
         iss >> key;
-        if(key == "") lru.remove();
+        if(key == ""){
+          lru.remove();
+        } 
 
         else{
-          iss >> key;
           lru.remove(key);
         }
        }
@@ -60,14 +62,16 @@ int main(){
 
     {
       "CONTAINS", [&](std::istringstream& iss){
+        std::string key;
         iss >> key;
 
-        lru.contains(key);
+        if(lru.contains(key)) std::cout << "True\n";
+        else std::cout << "False" << '\n';
       }
     },
 
     {
-      "SHOW STATS", [&](std::istringstream& iss){
+      "STATS", [&](std::istringstream& iss){
         lru.displayStats();
       }
     },
@@ -89,8 +93,6 @@ int main(){
     std::istringstream iss(input);
   
     iss >> command;
-    std::cout << command << '\n';
-
     if(commands.find(command) != commands.end()){
       commands[command](iss);
     }
@@ -98,4 +100,5 @@ int main(){
       std::cout << "Invalid command." << '\n';
     }
   }
+  return 0;
 }

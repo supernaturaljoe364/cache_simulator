@@ -107,9 +107,9 @@ class lruCache{
       else{
       //remove the LRU cache (the last) pop_back()
         auto last = cacheList.back().first;   //access the alst element (pair), and access the key
+        cacheList.pop_back();
         check.erase(last);    //remove key from unordered_map
 
-        cacheList.pop_back();
         std::cout << "LRU task removed." << '\n';
       }
     }
