@@ -14,7 +14,6 @@ struct Data{
   size_t misses = 0;
   size_t evictions = 0;
   size_t hitMiss = 0;
-  
 };
 
 template<typename Key, typename Value>
@@ -156,9 +155,10 @@ class lruCache{
       std::cout << "Total Requests: "  << data.totalRequests << '\n';
       std::cout << "Hits: " << data.hits << '\n';
       std::cout << "Misses: " << data.misses << '\n';
-      std::cout << "HitMisses: " << data.hitMiss << '\n';
       std::cout << "Evictions: " << data.evictions << '\n';
       std::cout << "Hit Rate: " << (static_cast<float>(data.hits) / (data.hitMiss)) * 100 << "%" << '\n';
       std::cout << "Miss Rate: " << (static_cast<float>(data.misses)/ (data.hitMiss)) * 100 << "%" <<'\n';
+
+      //technically don't need a variable for miss if calculatign hit;
     }
 };

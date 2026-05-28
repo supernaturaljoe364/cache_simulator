@@ -1,0 +1,50 @@
+PUT user:1 alice
+PUT user:2 bob
+GET user:1
+CONTAINS user:3
+PUT session:1 active
+PUT config:theme dark
+GET user:2
+REMOVE
+PUT user:3 charlie
+CONTAINS config:theme
+GET session:1
+PUT token:1 abc123
+PUT user:4 diana
+REMOVE user:2
+GET user:2
+CONTAINS user:1
+PUT cache:item:1 dataA
+GET config:theme
+REMOVE
+PUT cache:item:2 dataB
+CONTAINS token:1
+GET cache:item:1
+PUT user:5 eve
+REMOVE session:1
+GET session:1
+PUT config:lang en
+CONTAINS user:5
+REMOVE
+PUT cache:item:3 dataC
+GET user:3
+PUT user:6 frank
+CONTAINS cache:item:2
+REMOVE config:theme
+GET config:theme
+PUT session:2 idle
+GET user:6
+REMOVE
+PUT token:2 xyz789
+CONTAINS token:2
+GET cache:item:3
+PUT user:7 grace
+REMOVE cache:item:1
+CONTAINS cache:item:1
+PUT config:mode safe
+GET user:7
+REMOVE
+PUT cache:item:4 dataD
+GET config:mode
+CONTAINS user:4
+REMOVE
