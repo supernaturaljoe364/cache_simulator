@@ -6,6 +6,7 @@
 
 int main(){
 
+  std::cout << "===LRU CACHE===" << '\n';
   int capacity;
   std::cout << "Enter cache capacity: ";
   std::cin >> capacity;
@@ -84,7 +85,7 @@ int main(){
   };
 
   while(true){
-    std::cout << "====LRU SHIT=====\n";
+    std::cout << "\n";
     std::string input;
 
     std::string command; 
