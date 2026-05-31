@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 project(cache_simulator)
 add_executable(cache_sim
   src/main.cpp
+  src/fifo.cpp
 ) 
 
 target_include_directories(cache_sim PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -13,6 +14,9 @@ target_include_directories(cache_sim PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
 
 configure_file(test/sample.txt
                 ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+
+
+
 
 
 #[[add_library(mylib)

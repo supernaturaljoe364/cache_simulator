@@ -3,42 +3,39 @@
 #include <sstream>
 #include <functional>
 #include <limits>
-#include <fstream>
 
 int main(){
 
-  std::cout << "===LRU CACHE===" << '\n';
   int capacity;
   std::cout << "Enter cache capacity: ";
   std::cin >> capacity;
 
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-  lruCache<std::string, std::string> lru(capacity);
+  LRU lru;
+
+  std::string key;
+  int value;
 
   std::unordered_map<std::string, std::function<void(std::istringstream&)>> commands = {
     {
       "GET", [&](std::istringstream& iss){
-        std::string key;
         iss >> key;
+        std::cout << key << '\n';
         auto result = lru.get(key);
 
         if(result.has_value()) {
           std::cout << result.value() << '\n';
-        }
-        else{
-          std::cout << "Key not found!" << '\n';
         }
       }
     },
 
     {
       "PUT", [&](std::istringstream& iss){
-        std::string key;
-        std::string value;
         iss >> key >> value;
+        std::cout << key << " " << value << '\n';
         lru.put(key, value);
 
-        std::cout << "Key, Value entered." << '\n';
+
       }
     },
 
@@ -50,13 +47,11 @@ int main(){
 
     {
       "REMOVE", [&](std::istringstream& iss){
-        std::string key;
         iss >> key;
-        if(key == ""){
-          lru.remove();
-        } 
+        if(key == "") lru.remove();
 
         else{
+          iss >> key;
           lru.remove(key);
         }
        }
@@ -64,16 +59,14 @@ int main(){
 
     {
       "CONTAINS", [&](std::istringstream& iss){
-        std::string key;
         iss >> key;
 
-        if(lru.contains(key)) std::cout << "True\n";
-        else std::cout << "False" << '\n';
+        lru.contains(key);
       }
     },
 
     {
-      "STATS", [&](std::istringstream& iss){
+      "SHOW STATS", [&](std::istringstream& iss){
         lru.displayStats();
       }
     },
@@ -81,37 +74,12 @@ int main(){
       "EXIT", [&](std::istringstream& iss){
         std::exit(0);
       }
-    },
-
-    {
-      "RUNTEST", [&](std::istringstream& iss){
-        //open file from tests/ dir and ru
-        std::ifstream readSample("sample.txt");
-        if(!readSample.is_open()){
-          std::cout << "File not found!" << '\n';
-        }
-        else{
-          std::string line;
-          while(std::getline(readSample, line)){
-              // run each individual line and run commands accordingly
-            std::string command; 
-
-            std::istringstream iss(line);
-          
-            iss >> command;
-            if(commands.find(command) != commands.end()){
-              commands[command](iss);
-            }
-
-          }
-        }
-      }
     }
 
   };
 
   while(true){
-    std::cout << "\n";
+    std::cout << "====LRU SHIT=====\n";
     std::string input;
 
     std::string command; 
@@ -120,6 +88,8 @@ int main(){
     std::istringstream iss(input);
   
     iss >> command;
+    std::cout << command << '\n';
+
     if(commands.find(command) != commands.end()){
       commands[command](iss);
     }
@@ -127,5 +97,4 @@ int main(){
       std::cout << "Invalid command." << '\n';
     }
   }
-  return 0;
 }
