@@ -1,8 +1,9 @@
 #include <iostream>
-#include "lru.h"
 #include <sstream>
 #include <functional>
 #include <limits>
+#include "evict.h"
+#include "cache.h"
 
 int main(){
 
