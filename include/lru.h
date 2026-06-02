@@ -1,12 +1,12 @@
 #pragma once
 #include "evict.h"
+#include <list>
 #include <unordered_map>
-#include <deque>
 
-class fifo : public evictionPolicy{
+class LRU : public evictionPolicy{
+  std::list<std::string> order;
+  std::unordered_map<std::string, std::list<std::string>::iterator> check;    //doesnt know about value
 
-  std::deque<std::string> queue;
-  std::unordered_map<std::string, std::deque<std::string>::iterator> queueMap;    
   public:
     void onPut(const std::string& key) override;
     void onGet(const std::string& key) override;

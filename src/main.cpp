@@ -4,7 +4,6 @@
 #include <limits>
 #include "evict.h"
 #include "cache.h"
-
 int main(){
 
   int capacity;
@@ -12,7 +11,7 @@ int main(){
   std::cin >> capacity;
 
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-  LRU lru;
+
 
   std::string key;
   int value;
