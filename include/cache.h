@@ -27,6 +27,9 @@ class Cache{
   void put(const std::string& key, const int& value);
   void remove();
   void remove(const std::string& key);
+  void display();
+  void contains(const std::string& key);
+  void displayStats();
 };
 
 

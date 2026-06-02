@@ -17,17 +17,19 @@ std::optional<int> Cache::get(const std::string& key){
 }
 
 void Cache::put(const std::string& key, const int& value){
-  if(cacheData.size() == capacity){
-    //eviction policy stuff
-    std::string evictedValue = policy->evict();
-    cacheData.erase(evictedValue);
-    //now add new key, value pair.
-    cacheData[key] = value;
+
+  auto it = cacheData.find(key);
+  if(it != cacheData.end()){
+    //key found!, update value.
+
+    it->second = value;
     policy->onPut(key);
-    
+
+    std::cout << "Value updated for existing Key" << '\n';
   }
+
   else{
-    
+
     auto it = cacheData.find(key);
     if(it != cacheData.end()){
       //key found!, update value.
@@ -45,7 +47,6 @@ void Cache::put(const std::string& key, const int& value){
       std::cout << "Key added to list." << '\n';
     }
   }
-
 }
 
 void Cache::remove(){

@@ -2,7 +2,6 @@
 #include <string>
 class evictionPolicy{
 //intialize constructor heree (capacity)
-
   public:
 
     virtual void onPut(const std::string& key) = 0;
