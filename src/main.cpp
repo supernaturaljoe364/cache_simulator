@@ -9,10 +9,12 @@
 #include "lfu.h"
 #include <cctype>
 #include <memory>
+#include <fstream>
+
 int main(){
 
   int capacity;
-  std::string evict;
+  int evict;
   std::unique_ptr<evictionPolicy> policy;
   std::cout << "Enter cache capacity: ";
   std::cin >> capacity;
@@ -22,23 +24,24 @@ int main(){
   std::cout << "\n1. LRU\n2. FIFO\n3. LFU\nEnter Eviction Policy: ";
   std::cin >> evict;
 
-  for(auto& ch : evict){
-    ch = std::tolower(static_cast<unsigned char>(ch));
-  }
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  switch(evict){
+    case 1:
+      policy = std::make_unique<LRU>();
+      break;
+    
+    case 2:
+      policy = std::make_unique<fifo>();
+      break;
 
-  if(evict == "lru"){
-    policy = std::make_unique<LRU>();
+    case 3:
+      policy = std::make_unique<lfu>();
+      break;
+    
+    default:
+      std::cout << "Invalid option" << '\n';
   }
-  else if(evict == "fifo"){
-    policy = std::make_unique<fifo>();
-  }
-  else if(evict == "lfu"){
-    policy = std::make_unique<lfu>();
-  }
-  else{
-    std::cout << "Invalid policy" << '\n';
-    return 1;
-  }
+  
 
 
   Cache cache(capacity, std::move(policy));
@@ -49,7 +52,6 @@ int main(){
     {
       "GET", [&](std::istringstream& iss){
         iss >> key;
-        std::cout << key << '\n';
         auto result = cache.get(key);
 
         if(result.has_value()) {
@@ -95,13 +97,38 @@ int main(){
     },
 
     {
-      "SHOW STATS", [&](std::istringstream& iss){
+      "STATS", [&](std::istringstream& iss){
         cache.displayStats();
       }
     },
     {
       "EXIT", [&](std::istringstream& iss){
         std::exit(0);
+      }
+    },
+
+    {
+      "RUNTEST", [&](std::istringstream& iss){
+        //open file from tests/ dir and ru
+        std::ifstream readSample("sample.txt");
+        if(!readSample.is_open()){
+          std::cout << "File not found!" << '\n';
+        }
+        else{
+          std::string line;
+          while(std::getline(readSample, line)){
+              // run each individual line and run commands accordingly
+            std::string command; 
+
+            std::istringstream iss(line);
+          
+            iss >> command;
+            if(commands.find(command) != commands.end()){
+              commands[command](iss);
+            }
+
+          }
+        }
       }
     }
 
@@ -117,7 +144,6 @@ int main(){
     std::istringstream iss(input);
   
     iss >> command;
-    std::cout << command << '\n';
 
     if(commands.find(command) != commands.end()){
       commands[command](iss);

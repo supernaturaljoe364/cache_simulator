@@ -1,13 +1,10 @@
-#pragma once
 #include <iostream>
 #include <unordered_map>
 #include <list>
 #include "lru.h"
-#include "cache.h"
 
 //insert key, insert value
 //key-value pair stored inside a container. (std::list)
-Data data;
 
 void LRU::onPut(const std::string& key){
   //only care about order.
@@ -16,12 +13,12 @@ void LRU::onPut(const std::string& key){
     //key not found! insert new key!
     order.push_front(key);
     check[key] = order.begin();
-    std::cout << key << " inserted into the list" << '\n';
+    std::cout << key << " inserted into the list(LRU)" << '\n';
   } 
   else{
     order.splice(order.begin(), order, it->second);
     check[key] = order.begin();
-    std::cout << key << " value updated. " << '\n';
+    std::cout << key << " order updated. (LRU)" << '\n';
   }
   return;
 }
@@ -40,7 +37,7 @@ std::string LRU::evict(){
   //return the key at end()? (they cannot actually access the value. so let cacheData remove)
   auto lruString = order.back();
   check.erase(lruString);
-  order.pop_back();
+  order.erase(order.end());
   std::cout << "Evicted from LRU." << '\n';
   return lruString;
 }

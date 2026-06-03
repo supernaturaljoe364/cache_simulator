@@ -9,6 +9,7 @@ add_executable(cache_sim
   src/fifo.cpp
   src/lru.cpp
   src/cache.cpp
+  src/lfu.cpp
 ) 
 
 target_include_directories(cache_sim PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
