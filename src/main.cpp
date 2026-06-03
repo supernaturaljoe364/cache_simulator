@@ -6,6 +6,7 @@
 #include "cache.h"
 #include "fifo.h"
 #include "lru.h"
+#include "lfu.h"
 #include <cctype>
 #include <memory>
 int main(){
@@ -32,6 +33,7 @@ int main(){
     policy = std::make_unique<fifo>();
   }
   else if(evict == "lfu"){
+    policy = std::make_unique<lfu>();
   }
   else{
     std::cout << "Invalid policy" << '\n';

@@ -67,8 +67,8 @@ void Cache::remove(const std::string& key){
     std::cout << "List is empty" << '\n';
   }
   else{
+    policy->onRemove(key);
     cacheData.erase(key);
     std::cout << key << " erased from cache" << '\n';
-    policy->onRemove(key);
   }
 }
