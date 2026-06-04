@@ -57,16 +57,16 @@ int main(){
         if(result.has_value()) {
           std::cout << result.value() << '\n';
         }
+        else{
+          std::cout << "Key not found!" << '\n';
+        }
       }
     },
 
     {
       "PUT", [&](std::istringstream& iss){
         iss >> key >> value;
-        std::cout << key << " " << value << '\n';
         cache.put(key, value);
-
-
       }
     },
 
@@ -134,7 +134,7 @@ int main(){
   };
 
   while(true){
-    std::cout << "====LRU SHIT=====\n";
+    std::cout << "====CACHE SIMULATOR=====\n";
     std::string input;
 
     std::string command; 

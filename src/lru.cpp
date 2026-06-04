@@ -11,6 +11,7 @@ void LRU::onPut(const std::string& key){
   auto it = check.find(key);
   if(it == check.end()){
     //key not found! insert new key!
+
     order.push_front(key);
     check[key] = order.begin();
     std::cout << key << " inserted into the list(LRU)" << '\n';
@@ -27,11 +28,8 @@ void LRU::onGet(const std::string& key){
   //retrieve key using std::unordered_map
 
   auto it = check.find(key);
-  if(it != check.end()){
-    order.splice(order.begin(), order, it->second);
-    check[key] = order.begin();
-    return;
-  }
+  order.splice(order.begin(), order, it->second);
+  check[key] = order.begin();
 }
 
 std::string LRU::evict(){

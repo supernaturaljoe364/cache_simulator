@@ -116,8 +116,8 @@ void Cache::displayStats() const{
     std::cout << "Miss Rate: 0.0%" << '\n';
   }
   else{
-    std::cout << "Hit Rate: " << (static_cast<float>(data.hits) / (data.totalRequests)) * 100 << "%" << '\n';
-    std::cout << "Miss Rate: " << (static_cast<float>(data.misses)/ (data.totalRequests)) * 100 << "%" <<'\n';
+    std::cout << "Hit Rate: " << (static_cast<float>(data.hits) / (data.hits + data.misses)) * 100 << "%" << '\n';
+    std::cout << "Miss Rate: " << (static_cast<float>(data.misses)/ (data.hits + data.misses)) * 100 << "%" <<'\n';
   }
   
 }
