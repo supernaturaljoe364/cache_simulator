@@ -71,14 +71,12 @@ void Cache::remove(const std::string& key){
     auto it = cacheData.find(key);
     if(it != cacheData.end()){
       //key found! remove
-      data.hits++;
       policy->onRemove(key);
       cacheData.erase(key);
       std::cout << key << " erased from cache" << '\n';
     }
     else{
       //key not found!
-      data.misses++;
     }
   }
 }

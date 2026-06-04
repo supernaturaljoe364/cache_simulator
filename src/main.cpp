@@ -10,7 +10,7 @@
 #include <cctype>
 #include <memory>
 #include <fstream>
-
+#include <chrono>
 int main(){
 
   int capacity;
@@ -115,6 +115,7 @@ int main(){
         }
         else{
           std::string line;
+          auto start = std::chrono::high_resolution_clock::now();
           while(std::getline(readSample, line)){
               // run each individual line and run commands accordingly
             std::string command; 
@@ -125,8 +126,11 @@ int main(){
             if(commands.find(command) != commands.end()){
               commands[command](iss);
             }
-
           }
+          auto end = std::chrono::high_resolution_clock::now();
+          
+          auto ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+          std::cout << "Elapsed time: " << ms.count() << "us\n";
         }
       }
     }
