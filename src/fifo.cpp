@@ -14,16 +14,9 @@ void fifo::onPut(const std::string& key){
 
   }
   else{
-    char choice;
-    std::cout << "Element already exists!\nDo you wish to push it once again?[y/n]" << '\n';
-    std::cin >> choice;
-
-    if(choice == 'y'){
-      //remove the element whose key matches
-      //onRemove(key), then push_back to the end
-      //else do nothing.
-    }
+      std::cout << "Element already exists!" << '\n';
   }
+  
 }
 
 void fifo::onGet(const std::string& key){

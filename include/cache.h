@@ -8,7 +8,6 @@ struct Data{
   size_t hits = 0;
   size_t misses = 0;
   size_t evictions = 0;
-  size_t hitMiss = 0;
 };
 
 class Cache{
@@ -17,6 +16,7 @@ class Cache{
   std::unordered_map<std::string, int> cacheData;
   std::unique_ptr<evictionPolicy> policy;
 
+  Data data;
   public:
   Cache(size_t capacity_, std::unique_ptr<evictionPolicy> policy_)  :
     capacity(capacity_), policy(std::move(policy_)) {};
@@ -24,12 +24,12 @@ class Cache{
 
 
   std::optional<int> get(const std::string& key);
-  void put(const std::string& key, const int& value);
+  void put(const std::string& key,  int value);
   void remove();
   void remove(const std::string& key);
-  void display();
-  void contains(const std::string& key);
-  void displayStats();
+  void display() const;
+  void contains(const std::string& key) const;
+  void displayStats() const;
 };
 
 

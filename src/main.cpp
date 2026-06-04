@@ -82,7 +82,6 @@ int main(){
         if(key == "") cache.remove();
 
         else{
-          iss >> key;
           cache.remove(key);
         }
        }

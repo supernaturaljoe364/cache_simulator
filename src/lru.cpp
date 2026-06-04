@@ -27,9 +27,11 @@ void LRU::onGet(const std::string& key){
   //retrieve key using std::unordered_map
 
   auto it = check.find(key);
-  order.splice(order.begin(), order, it->second);
-  check[key] = order.begin();
-  return;
+  if(it != check.end()){
+    order.splice(order.begin(), order, it->second);
+    check[key] = order.begin();
+    return;
+  }
 }
 
 std::string LRU::evict(){
@@ -37,7 +39,7 @@ std::string LRU::evict(){
   //return the key at end()? (they cannot actually access the value. so let cacheData remove)
   auto lruString = order.back();
   check.erase(lruString);
-  order.erase(order.end());
+  order.pop_back();
   std::cout << "Evicted from LRU." << '\n';
   return lruString;
 }

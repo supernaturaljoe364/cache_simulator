@@ -17,8 +17,8 @@ void lfu::onPut(const std::string& key){
 
 void lfu::onGet(const std::string& key){
   //accessed, so incremement frequency
-  lfuMap[key] += 1;
-  return;
+    lfuMap[key] += 1;
+    return;
 } 
 
 void lfu::onRemove(const std::string& key){

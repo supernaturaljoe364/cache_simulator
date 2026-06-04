@@ -2,7 +2,6 @@
 #include <optional>
 #include <iostream>
 
-Data data;
 
 std::optional<int> Cache::get(const std::string& key){
 
@@ -11,7 +10,6 @@ std::optional<int> Cache::get(const std::string& key){
   if(it != cacheData.end()){
     //key found!! now extract value using policy
     data.hits++;
-    data.hitMiss++;
     policy->onGet(key);
     return it->second;
   }
@@ -19,12 +17,11 @@ std::optional<int> Cache::get(const std::string& key){
     //key not found!, add to cacheData map and
 
     data.misses++;
-    data.hitMiss++;
     return std::nullopt;
   }
 }
 
-void Cache::put(const std::string& key, const int& value){
+void Cache::put(const std::string& key, int value){
 
   auto it = cacheData.find(key);
   if(it != cacheData.end()){
@@ -53,8 +50,6 @@ void Cache::put(const std::string& key, const int& value){
 
 void Cache::remove(){
     //eviction policy stuff
-
-  data.totalRequests++;
   if(cacheData.empty()){
     std::cout << "List is empty!" << '\n';
   }
@@ -77,7 +72,6 @@ void Cache::remove(const std::string& key){
     if(it != cacheData.end()){
       //key found! remove
       data.hits++;
-      data.hitMiss++;
       policy->onRemove(key);
       cacheData.erase(key);
       std::cout << key << " erased from cache" << '\n';
@@ -85,13 +79,11 @@ void Cache::remove(const std::string& key){
     else{
       //key not found!
       data.misses++;
-      data.hitMiss++;
     }
   }
 }
 
-void Cache::display(){
-  data.totalRequests++;
+void Cache::display() const{
   if(cacheData.empty()){
     std::cout << "List is empty" << '\n';
   }
@@ -103,8 +95,7 @@ void Cache::display(){
   }
 }
 
-void Cache::contains(const std::string& key){
-  data.totalRequests++;
+void Cache::contains(const std::string& key) const{
   auto it = cacheData.find(key);
   if(it != cacheData.end()){
     //key found!
@@ -113,21 +104,20 @@ void Cache::contains(const std::string& key){
   else std::cout << key << " is not present in the list" << '\n';
 }
 
-void Cache::displayStats(){
+void Cache::displayStats() const{
   std::cout << "===CACHE SIMULATOR STATS===" << '\n';
   std::cout << "Total Requests: "  << data.totalRequests << '\n';
   std::cout << "Hits: " << data.hits << '\n';
   std::cout << "Misses: " << data.misses << '\n';
-  std::cout << "HitMisses: " << data.hitMiss << '\n';
   std::cout << "Evictions: " << data.evictions << '\n';
   
-  if(data.hitMiss == 0){
+  if(data.totalRequests == 0){
     std::cout << "Hit Rate: 0.0%" << '\n';
     std::cout << "Miss Rate: 0.0%" << '\n';
   }
   else{
-    std::cout << "Hit Rate: " << (static_cast<float>(data.hits) / (data.hitMiss)) * 100 << "%" << '\n';
-    std::cout << "Miss Rate: " << (static_cast<float>(data.misses)/ (data.hitMiss)) * 100 << "%" <<'\n';
+    std::cout << "Hit Rate: " << (static_cast<float>(data.hits) / (data.totalRequests)) * 100 << "%" << '\n';
+    std::cout << "Miss Rate: " << (static_cast<float>(data.misses)/ (data.totalRequests)) * 100 << "%" <<'\n';
   }
   
 }
