@@ -82,13 +82,20 @@ cmake --build build
 ## Commands
 
 
-`PUT apple 10` -> Insert key, value as apple, 10 into cache \
-`GET apple` -> Retrieve the value associated with the key. \
-`REMOVE banana` -> Remove the key,value pair where the key == "banana" \
-`REMOVE` -> Removes element via eviction policy \
-`CONTAINS banana` -> Checks to see if the key is present inside the cache \
-`DISPLAY` -> Display all the key,value pairs inside the cache  
-`RUNTEST` -> Run 10000 commands from sample.txt (see screenshot below) \
+`PUT apple 10` -> Insert key, value as apple, 10 into cache 
+
+`GET apple` -> Retrieve the value associated with the key. 
+
+`REMOVE banana` -> Remove the key,value pair where the key == "banana" 
+
+`REMOVE` -> Removes element via eviction policy 
+
+`CONTAINS banana` -> Checks to see if the key is present inside the cache 
+
+`DISPLAY` -> Display all the key,value pairs inside the cache 
+
+`RUNTEST` -> Run 10000 commands from sample.txt (see screenshot below) 
+
 `STATS` -> Show cache statistics (hit/miss rates, evictions, total requests)
 
 
