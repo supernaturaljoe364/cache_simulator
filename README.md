@@ -79,14 +79,18 @@ cmake --build build
 ```
 ./cache_sim
 ```
-## Sample Commands
+## Commands
 
 ```
 PUT apple 10
-PUT banana 20
 GET apple
 REMOVE banana
+REMOVE               ----> Removes element via eviction policy
+CONTAINS banana
+DISPLAY
+RUNTEST              ----> RUNS 10000 commands from sample.txt (see screenshow below)
 STATS
+
 ```
 ## Sample Benchmark Output
 
