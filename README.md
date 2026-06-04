@@ -1,10 +1,9 @@
 # Cache Simulator
 
 Cache Simulator written in Modern C++20. 
-
 Stores key-value pairs with a configurable capacity and supports multiple eviction policies (LRU, LFU, FIFO) through a polymorphic policy architecture.
 
-Built using STL containers, smart pointers, hash tables, benchmarking with std::chrono, and cache performance statistics.
+Built to compare eviction strategy performance under artificial workloads.
 
 ## Features
 
@@ -80,14 +79,22 @@ cmake --build build
 ```
 ./cache_sim
 ```
+## Sample Commands
 
+```
+PUT apple 10
+PUT banana 20
+GET apple
+REMOVE banana
+STATS
+```
 ## Sample Benchmark Output
 
 
 <img width="427" height="182" alt="sample_output" src="https://github.com/user-attachments/assets/40a8240a-26f7-4282-b939-01fb35f2ec29" />
 
 
-The screenshot below shows the results of a benchmark run using a workload of 10,000 commands from `sample.txt`. The simulator records request count, cache hits, misses, evictions, and overall hit/miss rates.
+The screenshot below shows the results of a benchmark run adopting LRU policy, using a workload of 10,000 commands from `sample.txt`. The simulator records request count, cache hits, misses, evictions, and overall hit/miss rates.
 
 ## Concepts Practiced
 
