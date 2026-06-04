@@ -1,6 +1,10 @@
 # Cache Simulator
 
-A cache simulator written in modern C++20 that supports multiple eviction policies through a polymorphic policy-based architecture.
+Cache Simulator written in Modern C++20. 
+
+Stores key-value pairs with a configurable capacity and supports multiple eviction policies (LRU, LFU, FIFO) through a polymorphic policy architecture.
+
+Built using STL containers, smart pointers, hash tables, benchmarking with std::chrono, and cache performance statistics.
 
 ## Features
 
