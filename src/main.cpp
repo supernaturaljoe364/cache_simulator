@@ -129,8 +129,8 @@ int main(){
           }
           auto end = std::chrono::high_resolution_clock::now();
           
-          auto ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-          std::cout << "Elapsed time: " << ms.count() << "us\n";
+          auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+          std::cout << "Elapsed time: " << ms.count() << "ms\n";
         }
       }
     }
