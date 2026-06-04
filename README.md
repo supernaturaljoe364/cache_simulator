@@ -80,7 +80,8 @@ cmake --build build
 ## Sample Benchmark Output
 
 
-![example-(2).png](jb-image:img_1780581780703_519176a518f87)
+<img width="427" height="182" alt="sample_output" src="https://github.com/user-attachments/assets/40a8240a-26f7-4282-b939-01fb35f2ec29" />
+
 
 The screenshot below shows the results of a benchmark run using a workload of 10,000 commands from `sample.txt`. The simulator records request count, cache hits, misses, evictions, and overall hit/miss rates.
 
