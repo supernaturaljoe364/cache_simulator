@@ -123,6 +123,7 @@ The screenshot above shows the results of a benchmark run adopting LRU policy, u
 * Iterator-Based Data Structures
 * Cache Eviction Algorithms
 * Basic Performance Benchmarking
+* Multi-Data-Structured architecture
 
 
 
