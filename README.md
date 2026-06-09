@@ -2,8 +2,11 @@
 
 Cache Simulator written in Modern C++20. 
 Stores key-value pairs with a configurable capacity and supports multiple eviction policies (LRU, LFU, FIFO) through a polymorphic policy architecture.
+All policies run operations in O(1) Time Complexity.
 
 Built to compare eviction strategy performance under artificial workloads.
+Inspo: LeetCode 460: LFU Cache
+Link: https://leetcode.com/problems/lfu-cache/description/
 
 ## Features
 
