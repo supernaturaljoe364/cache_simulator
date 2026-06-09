@@ -1,56 +1,91 @@
 #include "lfu.h"
-#include <climits>
 #include <iostream>
+#include <iterator>
+#include <climits>
 
 
 void lfu::onPut(const std::string& key){
-  //if it exists, increment frequency
-  auto it = lfuMap.find(key);
-  if(it != lfuMap.end()){
-    lfuMap[key] += 1;
-  }
-  //if it doesn't exist, initialize freq to 1
-  else lfuMap[key] = 1;
+//insert key. chech if it exxists
+  auto it = keyMap.find(key);
+  if(it != keyMap.end()){
+      //found! update freq and insert new value
+      auto listIter = it->second;
+      int curFreq = listIter->freq;
 
-  return;
+
+      Node node = *(it->second);
+      freqMap[curFreq].erase(listIter);
+
+      node.freq++;
+
+      freqMap[node.freq].push_front(node);
+      keyMap[key] = freqMap[node.freq].begin();   
+      
+  }
+  else{
+      //not found! 
+      minFreq = 1;
+      Node node;
+      node.key = key;
+      node.freq = minFreq;
+
+      freqMap[minFreq].push_front(node);
+
+      keyMap[key] = freqMap[minFreq].begin();
+  }
 }
 
 void lfu::onGet(const std::string& key){
   //accessed, so incremement frequency
-    lfuMap[key] += 1;
-    return;
-} 
+  auto it = keyMap.find(key);
+  if(it != keyMap.end()){
 
+    auto listIter = it->second;
+    int curFreq = listIter->freq;
+
+    Node node = *(it->second);
+    freqMap[curFreq].erase(listIter);
+
+    node.freq++;
+    freqMap[node.freq].push_front(node);
+    keyMap[key] = freqMap[node.freq].begin();
+  } 
+}
 void lfu::onRemove(const std::string& key){
   //erase key from map
-  auto it = lfuMap.find(key);
-  if(it != lfuMap.end()){
-    lfuMap.erase(key);
-    std::cout << key << " removed from map" << '\n';
-  }
-  else{
-    std::cout << "Key not found!" << '\n';
+  auto it = keyMap.find(key);
+  if(it != keyMap.end()){
+    
+    //remove element from both freqMap and keyMap
+    //remoev from freqMap via freq 
+
+    auto removeFreq = it->second->freq;
+
+    keyMap.erase(key);
+
+    freqMap[removeFreq].erase(it->second);
+    //remove from keyMap via key
   }
 }
 
 std::string lfu::evict(){
-  //remove the one with the lowest frequency
-  //remove_if and remove cannot be used as they are designed for sequential containers
-  //traverse through the map
-  int minVal = INT_MAX;
-  std::string minKey;
-  for(const auto& kv : lfuMap){
-    if(kv.second < minVal){
-      minVal = kv.second;
-      minKey = kv.first;
-    }
+
+  //return the key from keyMap
+  //remove it from both freqMap and keyMap (the LFU)
+  
+  //remove the element with LFU via minFreq and if tie, remove via LRU (last element of DLL)
+  if(freqMap[minFreq].size() == 0){
+    minFreq++;
   }
 
-  //lowerst element foudn!, now remove taht element
-  lfuMap.erase(minKey);
-  std::cout << minKey << " erased via lfu" << '\n';
-  return minKey;
+  std::cout << "mnFreq: " << minFreq << '\n';
 
+  auto lastElement = std::prev(freqMap[minFreq].end());
+  std::string lastKey = lastElement->key;
+  keyMap.erase(lastKey);
+  freqMap[minFreq].erase(lastElement);
+
+  return lastKey;
 }
 
 

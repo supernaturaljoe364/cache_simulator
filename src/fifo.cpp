@@ -1,5 +1,4 @@
 #include "fifo.h"
-#include <iostream>
 
 void fifo::onPut(const std::string& key){
   //add key onto the queue<std::String>
@@ -10,11 +9,9 @@ void fifo::onPut(const std::string& key){
     queue.emplace_back(key);
     //map the key to last (since push_back is done)
     queueMap[key] = queue.end();
-    std::cout << key << " pushed onto queue (FIFO)" << '\n';
 
   }
   else{
-      std::cout << "Element already exists!" << '\n';
   }
   
 }
@@ -30,7 +27,6 @@ void fifo::onRemove(const std::string& key){
     //key found! 
     queue.erase(it->second);
     queueMap.erase(it);
-    std::cout << key << " removed from the queue." << '\n';
   }
 }
 
@@ -39,9 +35,8 @@ std::string fifo::evict(){
   
   std::string firstElement = queue.front();
   queue.pop_front();
-  queueMap.erase(queueMap.begin());
+  queueMap.erase(firstElement);
 
-  std::cout << firstElement << "(1st) removed fromt queue(FIFO)" << '\n';
   return firstElement;
 }
 
