@@ -1,5 +1,4 @@
 #include "lfu.h"
-#include <iostream>
 #include <iterator>
 #include <climits>
 
@@ -8,19 +7,7 @@ void lfu::onPut(const std::string& key){
 //insert key. chech if it exxists
   auto it = keyMap.find(key);
   if(it != keyMap.end()){
-      //found! update freq and insert new value
-      auto listIter = it->second;
-      int curFreq = listIter->freq;
-
-
-      Node node = *(it->second);
-      freqMap[curFreq].erase(listIter);
-
-      node.freq++;
-
-      freqMap[node.freq].push_front(node);
-      keyMap[key] = freqMap[node.freq].begin();   
-      
+    onGet(key);      
   }
   else{
       //not found! 
@@ -45,6 +32,14 @@ void lfu::onGet(const std::string& key){
 
     Node node = *(it->second);
     freqMap[curFreq].erase(listIter);
+
+    if(freqMap[curFreq].empty()){
+      freqMap.erase(curFreq);
+
+      if(minFreq == curFreq){
+        ++minFreq;
+      }
+    }
 
     node.freq++;
     freqMap[node.freq].push_front(node);
@@ -77,8 +72,6 @@ std::string lfu::evict(){
   if(freqMap[minFreq].size() == 0){
     minFreq++;
   }
-
-  std::cout << "mnFreq: " << minFreq << '\n';
 
   auto lastElement = std::prev(freqMap[minFreq].end());
   std::string lastKey = lastElement->key;
